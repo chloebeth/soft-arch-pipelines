@@ -49,6 +49,16 @@ jobs:
     runs-on: windows-latest
     
     steps:
-    - name: RunLint
+    - name: Setup VSTest.exe
+      uses: Malcolmnixon/Setup-VSTest@v4
+      
+    - name: DownloadBinaries
+      uses: actions/upload-artifact@v3
+      with:
+        name: my-artifact
+        path: x64\Release
+        if-no-files-found: error
+      
+    - name: RunTests
       working-directory: ${{env.GITHUB_WORKSPACE}}
-      run: echo testing
+      run: VSTest.Console.exe x64\Release\UnitTest1.dll
